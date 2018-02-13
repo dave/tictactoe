@@ -24,9 +24,13 @@ func main() {
 		run()
 	case "js":
 		var document = dom.GetWindow().Document().(dom.HTMLDocument)
-		document.AddEventListener("DOMContentLoaded", false, func(dom.Event) {
+		if document.ReadyState() != "loading" {
 			go run()
-		})
+		} else {
+			document.AddEventListener("DOMContentLoaded", false, func(dom.Event) {
+				go run()
+			})
+		}
 	}
 }
 
